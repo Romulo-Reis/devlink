@@ -1,73 +1,87 @@
-# React + TypeScript + Vite
+# DevLink
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Projeto desenvolvido como parte do curso **FullStack Pro** do [Sujeito Programador](https://sujeitoprogramador.com/), acompanhado como aluno.
 
-Currently, two official plugins are available:
+Uma aplicação de gerenciamento de links pessoais (estilo Linktree), onde o usuário administrador pode cadastrar links customizados e links de redes sociais que são exibidos em uma página pública.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Funcionalidades
 
-## React Compiler
+- **Página pública** — exibe todos os links cadastrados com cores personalizadas e atalhos para redes sociais (Facebook, Instagram e YouTube)
+- **Painel administrativo** — adiciona e remove links com nome, URL, cor do texto e cor de fundo customizáveis, com preview em tempo real
+- **Gerenciamento de redes sociais** — salva e atualiza os links das redes sociais exibidos na página pública
+- **Autenticação** — login via e-mail e senha protegendo todas as rotas administrativas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tecnologias
 
-## Expanding the ESLint configuration
+- [React 19](https://react.dev/) com [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/) como bundler
+- [Tailwind CSS v4](https://tailwindcss.com/) para estilização
+- [Firebase](https://firebase.google.com/) — Firestore (banco de dados) e Authentication
+- [React Router v7](https://reactrouter.com/)
+- [React Icons](https://react-icons.github.io/react-icons/)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Estrutura de rotas
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Rota | Descrição | Proteção |
+|---|---|---|
+| `/` | Página pública com os links | Privada |
+| `/login` | Tela de login | Pública |
+| `/admin` | Gerenciamento de links | Privada |
+| `/admin/social` | Gerenciamento de redes sociais | Privada |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Como executar localmente
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Pré-requisitos
+
+- Node.js 18+
+- Uma conta no [Firebase](https://firebase.google.com/) com um projeto criado
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/seu-usuario/devlink.git
+cd devlink
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Instale as dependências
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+### 3. Configure as variáveis de ambiente
+
+Crie um arquivo `.env` na raiz do projeto com as credenciais do seu projeto Firebase:
+
+```env
+VITE_FIREBASE_API_KEY=sua_api_key
+VITE_FIREBASE_AUTH_DOMAIN=seu_projeto.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=seu_projeto_id
+VITE_FIREBASE_STORAGE_BUCKET=seu_projeto.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=seu_sender_id
+VITE_FIREBASE_APP_ID=seu_app_id
+```
+
+### 4. Configure o Firebase
+
+No console do Firebase:
+
+1. Ative o **Firestore Database** e crie as collections `links` e `social`
+2. Ative o **Authentication** com o provedor **E-mail/Senha** e crie um usuário administrador
+
+### 5. Execute o projeto
+
+```bash
+npm run dev
+```
+
+Acesse `http://localhost:5173` no navegador.
+
+## Scripts disponíveis
+
+| Comando | Descrição |
+|---|---|
+| `npm run dev` | Inicia o servidor de desenvolvimento |
+| `npm run build` | Gera o build de produção |
+| `npm run preview` | Visualiza o build localmente |
+| `npm run lint` | Executa o ESLint |
